@@ -1,0 +1,36 @@
+## Visual Studio / .NET gitignore
+.vs/
+[Bb]in/
+[Oo]bj/
+out/
+
+# User-specific files
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+*.userprefs
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Ll]og/
+[Ll]ogs/
+
+# Sensitive or transient logs
+EmailsLog.txt
+*.log
+
+# Visual Studio Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
