@@ -20,6 +20,7 @@ namespace Ecom.Infrastructure.Repositories
         public async Task<IEnumerable<ProductSizeStock>> GetSizeStocksByProductIdAsync(int productId)
         {
             return await _context.ProductSizeStocks
+                .AsNoTracking()
                 .Where(pss => pss.ProductId == productId)
                 .ToListAsync();
         }

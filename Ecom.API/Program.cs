@@ -53,7 +53,15 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Database
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlCon")));
+builder.Services.AddDbContext<AppDbContext>(options => 
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("SqlCon"),
+        sqlOptions => sqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(10),
+            errorNumbersToAdd: new[] { 1205 } // SQL Server Deadlock Error Number
+        )
+    ));
 
 // JWT Authentication
 builder.Services.AddAuthentication(options =>

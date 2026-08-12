@@ -20,6 +20,7 @@ namespace Ecom.Infrastructure.Repositories
         public async Task<IEnumerable<Order>> GetAllOrdersAsync()
         {
             return await _context.Orders
+                .AsNoTracking()
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Product)
                 .OrderByDescending(o => o.OrderDate)
@@ -37,6 +38,7 @@ namespace Ecom.Infrastructure.Repositories
         public async Task<IEnumerable<Order>> GetOrdersByUserIdAsync(int userId)
         {
             return await _context.Orders
+                .AsNoTracking()
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Product)
                 .Where(o => o.UserId == userId)

@@ -16,7 +16,7 @@ namespace Ecom.Infrastructure.Repositories
         }
         public async Task<IEnumerable<AddItem>> GetAllAddItemsAsync()
         {
-            return await _context.AddItems.ToListAsync();
+            return await _context.AddItems.AsNoTracking().ToListAsync();
         }
         public async Task<AddItem?> GetAddItemByIdAsync(int id)
         {
@@ -46,7 +46,7 @@ namespace Ecom.Infrastructure.Repositories
 
         public async Task<(IEnumerable<AddItem> Items, int TotalCount)> GetPagedItemsAsync(string? search, int? categoryId, string? size, string? sortBy, int page, int pageSize)
         {
-            var query = _context.AddItems.AsQueryable();
+            var query = _context.AddItems.AsNoTracking().AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(search))
             {

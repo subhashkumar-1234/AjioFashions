@@ -52,10 +52,11 @@ namespace Ecom.Infrastructure.Repositories
                     AddedAt = DateTime.UtcNow
                 };
                 _context.WishlistItems.Add(item);
+                wishlist.WishlistItems.Add(item);
                 await _context.SaveChangesAsync();
             }
 
-            return await GetOrCreateWishlistByUserIdAsync(userId);
+            return wishlist;
         }
 
         public async Task<Wishlist> RemoveWishlistItemAsync(int userId, int productId)
@@ -66,10 +67,11 @@ namespace Ecom.Infrastructure.Repositories
             if (item != null)
             {
                 _context.WishlistItems.Remove(item);
+                wishlist.WishlistItems.Remove(item);
                 await _context.SaveChangesAsync();
             }
 
-            return await GetOrCreateWishlistByUserIdAsync(userId);
+            return wishlist;
         }
 
         public async Task<Wishlist> ClearWishlistAsync(int userId)
@@ -78,10 +80,11 @@ namespace Ecom.Infrastructure.Repositories
             if (wishlist.WishlistItems.Any())
             {
                 _context.WishlistItems.RemoveRange(wishlist.WishlistItems);
+                wishlist.WishlistItems.Clear();
                 await _context.SaveChangesAsync();
             }
 
-            return await GetOrCreateWishlistByUserIdAsync(userId);
+            return wishlist;
         }
     }
 }

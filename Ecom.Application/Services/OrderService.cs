@@ -59,7 +59,10 @@ namespace Ecom.Application.Services
 
             decimal totalAmount = 0;
 
-            foreach (var itemDto in orderDto.Items)
+            // Sort items deterministically by ProductId then Size to prevent circular lock waits (SQL Deadlock Process ID 54)
+            var sortedItems = orderDto.Items.OrderBy(i => i.ProductId).ThenBy(i => i.Size ?? "").ToList();
+
+            foreach (var itemDto in sortedItems)
             {
                 var product = await _addItemRepository.GetAddItemByIdAsync(itemDto.ProductId);
                 if (product == null)

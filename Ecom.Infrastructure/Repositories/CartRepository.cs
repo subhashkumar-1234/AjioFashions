@@ -52,12 +52,13 @@ namespace Ecom.Infrastructure.Repositories
             {
                 item.CartId = cart.Id;
                 _context.CartItems.Add(item);
+                cart.CartItems.Add(item);
             }
 
             cart.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
 
-            return await GetOrCreateCartByUserIdAsync(userId);
+            return cart;
         }
 
         public async Task<Cart> RemoveCartItemAsync(int userId, int productId)
@@ -68,11 +69,15 @@ namespace Ecom.Infrastructure.Repositories
             if (itemsToRemove.Any())
             {
                 _context.CartItems.RemoveRange(itemsToRemove);
+                foreach (var rem in itemsToRemove)
+                {
+                    cart.CartItems.Remove(rem);
+                }
                 cart.UpdatedAt = DateTime.UtcNow;
                 await _context.SaveChangesAsync();
             }
 
-            return await GetOrCreateCartByUserIdAsync(userId);
+            return cart;
         }
 
         public async Task<Cart> ClearCartAsync(int userId)
@@ -81,11 +86,12 @@ namespace Ecom.Infrastructure.Repositories
             if (cart.CartItems.Any())
             {
                 _context.CartItems.RemoveRange(cart.CartItems);
+                cart.CartItems.Clear();
                 cart.UpdatedAt = DateTime.UtcNow;
                 await _context.SaveChangesAsync();
             }
 
-            return await GetOrCreateCartByUserIdAsync(userId);
+            return cart;
         }
     }
 }
